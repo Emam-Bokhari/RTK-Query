@@ -1,9 +1,12 @@
 import { Fragment } from "react/jsx-runtime";
+import Navbar from "./components/layout/Navbar";
+import { Outlet } from "react-router-dom";
 
 const App = () => {
   return (
     <Fragment>
-      <div>app component</div>
+      <Navbar />
+      <Outlet />
     </Fragment>
   );
 };
