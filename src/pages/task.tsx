@@ -5,7 +5,12 @@ import { ITask } from "@/types";
 import { Fragment } from "react/jsx-runtime";
 
 const Tasks = () => {
-  const { data, isLoading, isError } = useGetTasksQuery(undefined);
+  const { data, isLoading, isError } = useGetTasksQuery(undefined, {
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true, // component mount,unmount
+    refetchOnReconnect: true, // data lost connection, and connect
+  });
 
   console.log(data);
 
