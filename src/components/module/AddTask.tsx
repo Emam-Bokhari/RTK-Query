@@ -30,27 +30,32 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useCreateTasksMutation } from "@/redux/api/baseApi";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
+
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export function AddTask() {
   const form = useForm();
 
-  const [open, setOpen] = useState(false);
+  const [createTask, { data }] = useCreateTasksMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  console.log(data, "data");
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const taskData = {
       ...data,
       isCompleted: false,
     };
-    setOpen(false);
+    const response = await createTask(taskData).unwrap();
+    console.log(response);
+
     form.reset();
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button>Add Task</Button>
       </DialogTrigger>
@@ -59,7 +64,7 @@ export function AddTask() {
           <DialogTitle>Add Task</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-3">
+          <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="title"
