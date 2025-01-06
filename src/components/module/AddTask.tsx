@@ -32,13 +32,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export function AddTask() {
   const form = useForm();
 
+  const [open, setOpen] = useState(false);
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const taskData = {
+      ...data,
+      isCompleted: false,
+    };
+    setOpen(false);
+    form.reset();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger asChild>
         <Button>Add Task</Button>
       </DialogTrigger>
